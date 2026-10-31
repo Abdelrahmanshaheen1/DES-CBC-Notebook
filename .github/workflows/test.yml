@@ -1,0 +1,18 @@
+name: Run notebook
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  notebook:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install dependencies
+        run: pip install nbconvert ipykernel pycryptodome
+      - name: Execute the notebook (its final cell asserts the DES test vector)
+        run: jupyter nbconvert --to notebook --execute des_cbc.ipynb --output /tmp/executed.ipynb
